@@ -1,10 +1,16 @@
-const express = require("express")
-const mongoose = require("mongoose")
+
+import express from "express"
+import mongoose from "mongoose"
+import userRouter from "./routes/userRouter.js";
+import authRouter from "./routes/authRouter.js";
 const app = express()
+const Port = 4000
+import dotenv from "dotenv"
 
-require('dotenv').config(); 
 
+dotenv.config()
 
+app.use(express.json())
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Database is connected");
@@ -13,7 +19,9 @@ mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopolog
     console.error("Error connecting to database:", err);
   });
 
+  app.use("/api/user", userRouter)
+  app.use("/api/auth", authRouter)
 
-app.listen(()=>{
+app.listen((Port),()=>{
     console.log("App is running on 4000");
 })
