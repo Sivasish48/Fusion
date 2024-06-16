@@ -24,22 +24,35 @@ To read more about using these font, please visit the Next.js documentation:
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
 import { TextGenerateEffect } from "../ui/text-generate-effect.jsx";
+import { Link } from "react-router-dom";
 
 export default function landing() {
 
-  const words = `Elevate Your Tech Blogging Presence`
+  const words = `Elevate Your Tech Blogging Presence`;
   return (
-    (<div className="flex flex-col items-center justify-center min-h-screen bg-white">
-      <div className="max-w-3xl px-4 md:px-0 text-center -mt-16">
-        <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            <TextGenerateEffect words={words}/>
-        </h1>
-        <p className="mt-6 text-xl text-gray-500">
-        Where Ideas Merge, Stories Evolve
-        </p>
+    <div className="flex flex-col min-h-screen bg-white">
+      <div className="flex-grow flex flex-col items-center justify-center">
+        <div className="max-w-3xl px-4 md:px-0 text-center -mt-16">
+          <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <TextGenerateEffect words={words} />
+          </h1>
+          <p className="mt-6 text-xl text-gray-500">
+            Where Ideas Merge, Stories Evolve
+          </p>
+        </div>
       </div>
+
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 border-t border-gray-800 items-center px-6">
+        <p className="text-xs text-gray-500">© 2024 Fusion by Sivasish. All rights reserved.</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link className="text-xs hover:text-gray-300" href="#">
+            Terms of Service
+          </Link>
+          <Link className="text-xs hover:text-gray-300" href="#">
+            Privacy
+          </Link>
+        </nav>
+      </footer>
     </div>
-    
-    )
   );
 }

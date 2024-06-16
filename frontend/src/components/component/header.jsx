@@ -57,12 +57,18 @@ export default function Header() {
         </div>
       </div>
       <div className="flex items-center space-x-4">
-      <Link to="#" 
-       className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50">
-          Signup
-        </Link>
-        <DarkModeLogo />
-      </div>
+  <Link
+    to="/signup"
+    className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold whitespace-nowrap transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+  >
+    Sign up
+  </Link>
+  <div className="flex items-center">
+    <DarkModeLogo />
+  </div>
+</div>
+
+
     </header>
   );
 }

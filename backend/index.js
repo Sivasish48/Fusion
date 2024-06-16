@@ -22,6 +22,21 @@ mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopolog
   app.use("/api/user", userRouter)
   app.use("/api/auth", authRouter)
 
+
+  //for internal errors
+  app.use((err,req,res,next)=>{
+
+    const statusCode = err.statusCode || 500
+    const message = err.message || "Internal Server Error"
+    
+    res.status(statusCode).json({
+      success:False,
+      statusCode,
+      message,
+
+    })
+  })
+
 app.listen((Port),()=>{
     console.log("App is running on 4000");
 })
