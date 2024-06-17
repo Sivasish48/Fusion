@@ -1,4 +1,4 @@
-
+import cors from "cors"
 import express from "express"
 import mongoose from "mongoose"
 import userRouter from "./routes/userRouter.js";
@@ -6,7 +6,7 @@ import authRouter from "./routes/authRouter.js";
 const app = express()
 const Port = 4000
 import dotenv from "dotenv"
-
+app.use(cors())
 
 dotenv.config()
 
