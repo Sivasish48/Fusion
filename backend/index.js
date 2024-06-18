@@ -1,42 +1,41 @@
-import cors from "cors"
-import express from "express"
-import mongoose from "mongoose"
+import cors from "cors";
+import express from "express";
+import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import authRouter from "./routes/authRouter.js";
-const app = express()
-const Port = 4000
-import dotenv from "dotenv"
-app.use(cors())
+import dotenv from "dotenv";
 
-dotenv.config()
+const app = express();
+const Port = 4000;
 
-app.use(express.json())
+dotenv.config();
+
+app.use(cors());
+app.use(express.json());
+
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("Database is connected");
-  })
-  .catch((err) => {
-    console.error("Error connecting to database:", err);
-  });
-
-  app.use("/api/user", userRouter)
-  app.use("/api/auth", authRouter)
-
-
-  //for internal errors
-  app.use((err,req,res,next)=>{
-
-    const statusCode = err.statusCode || 500
-    const message = err.message || "Internal Server Error"
-    
-    res.status(statusCode).json({
-      success:False,
-      statusCode,
-      message,
-
+    .then(() => {
+        console.log("Database is connected");
     })
-  })
+    .catch((err) => {
+        console.error("Error connecting to database:", err);
+    });
 
-app.listen((Port),()=>{
-    console.log("App is running on 4000");
-})
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+
+// For internal errors
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message,
+    });
+});
+
+app.listen(Port, () => {
+    console.log(`App is running on port ${Port}`);
+});

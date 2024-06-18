@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button"
 import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet"
 import { Link } from "react-router-dom"
 import DarkModeLogo from "./dark-mode-logo"
+import { useNavigate } from "react-router-dom"
 
 export default function Header() {
+  const navigate = useNavigate()
   return (
     <header className="flex h-20 w-full items-center justify-between px-4 md:px-6">
       <Sheet>
@@ -16,7 +18,9 @@ export default function Header() {
         <SheetContent side="left">
           <Link to="#" className="flex items-center">
             <Logo />
-            <span className="sr-only">Fusion Inc</span>
+            <span className="sr-only" onClick={()=>{
+              navigate("/")
+            }} >Fusion Inc</span>
           </Link>
           <div className="grid gap-2 py-6">
             <Link className="flex w-full items-center py-2 text-xl font-bold" to="#">
@@ -74,6 +78,7 @@ export default function Header() {
 }
 
 function Logo() {
+ 
   return (
     <div className="flex items-center space-x-2">
       <svg
@@ -90,7 +95,7 @@ function Logo() {
       >
         <path d="M12 2l2 7h-4l2-7zM2 12h7v4H2zM17 12h7v4h-7zM12 12l-2 7h4l-2-7z" />
       </svg>
-      <span className="text-2xl font-extrabold text-black" >FUSION</span>
+      <span className="text-2xl font-extrabold text-black"  >FUSION</span>
     </div>
   )
 }

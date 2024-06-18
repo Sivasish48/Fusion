@@ -3,8 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Footer from "@/components/component/footer";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,6 +41,11 @@ export default function Signup() {
       }
       console.log(data); // Log the response data for debugging
       setLoading(false);
+
+      if(res.ok){
+        navigate("/home")
+      }
+      
     } catch (error) {
       setErrorMessage(error.message);
       console.error("Error during signup:", error); // Log errors for debugging
@@ -105,6 +113,9 @@ export default function Signup() {
           <Button
             className="w-full bg-white text-black hover:bg-black hover:text-white"
             type="button"
+            onClick={()=>{
+              navigate("/signin")
+            }}
           >
             Already Have An Account? Sign In
           </Button>
