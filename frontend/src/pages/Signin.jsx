@@ -4,27 +4,28 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Footer from "@/components/component/footer";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { userState } from "@/recoil/atoms/userAtoms";
+import { useUserActions } from "@/recoil/actions/userActions";
 
-
-export default function Signup() {
-  const navigate = useNavigate()
+export default function SignIn() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useRecoilState(userState);
+  const { signInStart, signInSuccess, signInFailure } = useUserActions();
+  const { loading, error: errorMessage, currentUser } = user;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    console.log(`${e.target.id}: ${e.target.value}`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("All fields are required");
+      return signInFailure('Please fill all the fields');
     }
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      signInStart();
       const res = await fetch("http://localhost:4000/api/auth/signin", {
         method: "POST",
         headers: {
@@ -36,20 +37,15 @@ export default function Signup() {
       const data = await res.json();
 
       if (data.success === false) {
-        setLoading(false);
-        return setErrorMessage(data.message);
+        return signInFailure(data.message);
       }
-      console.log(data); // Log the response data for debugging
-      setLoading(false);
 
-      if(res.ok){
-        navigate("/home")
+      if (res.ok) {
+        signInSuccess(data);
+        navigate("/home");
       }
-      
     } catch (error) {
-      setErrorMessage(error.message);
-      console.error("Error during signup:", error); // Log errors for debugging
-      setLoading(false);
+      signInFailure(error.message);
     }
   };
 
@@ -64,9 +60,6 @@ export default function Signup() {
             </p>
           </div>
           <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="space-y-2">
-             
-            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -106,9 +99,7 @@ export default function Signup() {
           <Button
             className="w-full bg-white text-black hover:bg-black hover:text-white"
             type="button"
-            onClick={()=>{
-              navigate("/signup")
-            }}
+            onClick={() => navigate("/signup")}
           >
             Don't Have An Account? Sign Up
           </Button>
