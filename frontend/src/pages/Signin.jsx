@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Footer from "@/components/component/footer";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/atoms/userAtoms";
 import { useUserActions } from "@/recoil/actions/userActions";
 
@@ -13,7 +13,7 @@ export default function SignIn() {
   const [formData, setFormData] = useState({});
   const [user, setUser] = useRecoilState(userState);
   const { signInStart, signInSuccess, signInFailure } = useUserActions();
-  const { loading, error: errorMessage, currentUser } = user;
+  const { loading, error: errorMessage } = user;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
