@@ -1,22 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
-import DarkModeLogo from "./dark-mode-logo";
+import { ModeToggle } from "./mode-toggle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/atoms/userAtoms";
 import { ProfileLogo } from "./profile-logo";
+import { useTheme } from "@/components/component/theme-provider.jsx";
 
 export default function Header() {
   const navigate = useNavigate();
   const { currentUser } = useRecoilValue(userState);
+  const { theme } = useTheme();
 
   return (
-    <header className="flex h-20 w-full items-center justify-between px-4 md:px-6">
+    <header className="sticky top-0 left-0 right-0 z-50 flex h-20 w-full items-center justify-between px-4 md:px-6 bg-white dark:bg-black">
       {/* Left section with brand logo */}
       <div className="flex items-center space-x-4">
         <Link className="flex items-center" to="/">
-          <Logo />
+          <Logo theme={theme} />
           <span className="sr-only">Fusion Inc</span>
         </Link>
       </div>
@@ -25,19 +27,19 @@ export default function Header() {
       <div className="flex items-center justify-center w-full lg:space-x-4">
         <div className="hidden lg:flex space-x-4">
           <Link
-            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-black dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
             to="/home"
           >
             Home
           </Link>
           <Link
-            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-black dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
             to="/project"
           >
             Projects
           </Link>
           <Link
-            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+            className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-black dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
             to="/about"
           >
             About
@@ -49,19 +51,18 @@ export default function Header() {
       <div className="flex items-center space-x-4">
         {currentUser ? (
           <div className="flex items-center space-x-4 ml-4">
-            
             <ProfileLogo />
           </div>
         ) : (
           <Link
             to="/signup"
-            className="whitespace-nowrap group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+            className="whitespace-nowrap group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-black dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           >
             Sign Up
           </Link>
         )}
         <div className="flex items-center ">
-          <DarkModeLogo />
+          <ModeToggle />
         </div>
       </div>
       
@@ -73,9 +74,9 @@ export default function Header() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent side="left" className="bg-white dark:bg-black">
           <Link to="#" className="flex items-center">
-            <Logo />
+            <Logo theme={theme} />
             <span className="sr-only" onClick={() => navigate("/")}>
               Fusion Inc
             </span>
@@ -97,7 +98,7 @@ export default function Header() {
   );
 }
 
-function Logo() {
+function Logo({ theme }) {
   return (
     <div className="flex items-center space-x-2">
       <svg
@@ -106,7 +107,7 @@ function Logo() {
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="currentColor"
+        stroke={theme === "dark" ? "white" : "black"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -114,7 +115,7 @@ function Logo() {
       >
         <path d="M12 2l2 7h-4l2-7zM2 12h7v4H2zM17 12h7v4h-7zM12 12l-2 7h4l-2-7z" />
       </svg>
-      <span className="text-2xl font-extrabold text-black">FUSION</span>
+      <span className={`text-2xl font-extrabold ${theme === "dark" ? "text-white" : "text-black"}`}>FUSION</span>
     </div>
   );
 }

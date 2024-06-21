@@ -10,6 +10,8 @@ import  Header  from './components/component/header'
 import  Landing  from './components/component/landing'
 //import Footer from './components/component/footer'
 
+
+
 export default function App() {
   return (
     <BrowserRouter>

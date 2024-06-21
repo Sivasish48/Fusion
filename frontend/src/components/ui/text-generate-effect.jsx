@@ -1,14 +1,14 @@
 "use client";
 import { useEffect } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
-import { cn } from "@/./utils/cn.js";
-
-
+import { cn } from "@/utils/cn.js";
+import { useTheme } from "@/components/component/theme-provider.jsx";
 
 export const TextGenerateEffect = ({ words, className }) => {
   const [scope, animate] = useAnimate();
-  let wordsArray = words.split(" ");
-  
+  const { theme } = useTheme();
+  const wordsArray = words.split(" ");
+
   useEffect(() => {
     animate(
       "span",
@@ -25,16 +25,15 @@ export const TextGenerateEffect = ({ words, className }) => {
   const renderWords = () => {
     return (
       <motion.div ref={scope}>
-        {wordsArray.map((word, idx) => {
-          return (
-            <motion.span
-              key={word + idx}
-              className="dark:text-white text-black opacity-0"
-            >
-              {word}{" "}
-            </motion.span>
-          );
-        })}
+        {wordsArray.map((word, idx) => (
+          <motion.span
+            key={word + idx}
+            className="opacity-0"
+            style={{ color: theme === "dark" ? "white" : "black" }}
+          >
+            {word}{" "}
+          </motion.span>
+        ))}
       </motion.div>
     );
   };
@@ -42,7 +41,7 @@ export const TextGenerateEffect = ({ words, className }) => {
   return (
     <div className={cn("font-bold", className)}>
       <div className="mt-4">
-        <div className="dark:text-white text-black text-6xl leading-snug tracking-wide">
+        <div className="text-6xl leading-snug tracking-wide">
           {renderWords()}
         </div>
       </div>

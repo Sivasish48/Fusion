@@ -84,3 +84,36 @@
     }
   }
   
+  /* styles/globals.css */
+:root {
+  --background-light: #ffffff;
+  --background-dark: #000000;
+  --text-light: #000000;
+  --text-dark: #ffffff;
+}
+
+html.light {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+html.dark {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 4px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

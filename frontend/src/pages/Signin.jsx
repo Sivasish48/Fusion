@@ -80,20 +80,15 @@ export default function SignIn() {
               />
             </div>
             <Button className="relative w-full bg-black text-white" type="submit" disabled={loading}>
-              <span>Sign In</span>
-              {loading && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center rounded-full"
-                  style={{
-                    animation: "spin 1s linear infinite",
-                    borderWidth: "2px",
-                    borderStyle: "solid",
-                    borderColor: "transparent",
-                    borderTopColor: "currentColor",
-                  }}
-                />
-              )}
-            </Button>
+  {!loading && <span>Sign In</span>}
+  {loading && (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="spinner" />
+    </div>
+  )}
+</Button>
+
+
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </form>
           <Button
