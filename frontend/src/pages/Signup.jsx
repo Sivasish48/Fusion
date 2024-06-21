@@ -4,17 +4,17 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Footer from "@/components/component/footer";
 import { useNavigate } from "react-router-dom";
-
+import { useTheme } from "@/components/component/theme-provider.jsx"; // Assuming you have a theme provider for dark mode
 
 export default function Signup() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme(); // Get the current theme from your theme provider
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    console.log(`${e.target.id}: ${e.target.value}`);
   };
 
   const handleSubmit = async (e) => {
@@ -42,10 +42,9 @@ export default function Signup() {
       console.log(data); // Log the response data for debugging
       setLoading(false);
 
-      if(res.ok){
-        navigate("/home")
+      if (res.ok) {
+        navigate("/home");
       }
-      
     } catch (error) {
       setErrorMessage(error.message);
       console.error("Error during signup:", error); // Log errors for debugging
@@ -54,12 +53,12 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'dark:bg-black' : 'bg-white'}`}>
       <div className="flex-grow flex items-center justify-center">
         <div className="mx-auto max-w-md space-y-6 py-12 w-full px-4">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold">Sign Up</h1>
-            <p className="text-gray-500 dark:text-gray-400">
+            <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Sign Up</h1>
+            <p className={`text-gray-500 ${theme === 'dark' ? 'dark:text-gray-400' : 'dark:text-gray-700'}`}>
               Create your account to get started.
             </p>
           </div>
@@ -72,6 +71,7 @@ export default function Signup() {
                 required
                 type="text"
                 onChange={handleChange}
+                className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
             <div className="space-y-2">
@@ -82,6 +82,7 @@ export default function Signup() {
                 required
                 type="email"
                 onChange={handleChange}
+                className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
             <div className="space-y-2">
@@ -91,9 +92,14 @@ export default function Signup() {
                 required
                 type="password"
                 onChange={handleChange}
+                className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
-            <Button className="relative w-full bg-black text-white" type="submit" disabled={loading}>
+            <Button
+              className={`relative w-full hover:bg-black hover:text-white ${theme === 'dark' ? 'bg-black text-white' : 'bg-blue-500 text-white hover:bg-blue-700'}`}
+              type="submit"
+              disabled={loading}
+            >
               <span>Sign Up</span>
               {loading && (
                 <div
@@ -111,10 +117,10 @@ export default function Signup() {
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </form>
           <Button
-            className="w-full bg-white text-black hover:bg-black hover:text-white"
+            className={`w-full ${theme === 'dark' ? 'bg-white text-black hover:bg-black hover:text-white' : 'bg-blue-500 text-white hover:bg-blue-700'}`}
             type="button"
-            onClick={()=>{
-              navigate("/signin")
+            onClick={() => {
+              navigate("/signin");
             }}
           >
             Already Have An Account? Sign In

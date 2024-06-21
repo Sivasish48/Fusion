@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "@/recoil/atoms/userAtoms";
 import { useUserActions } from "@/recoil/actions/userActions";
+import { useTheme } from "@/components/component/theme-provider.jsx";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({});
   const [user, setUser] = useRecoilState(userState);
   const { signInStart, signInSuccess, signInFailure } = useUserActions();
@@ -50,7 +52,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen bg-white dark:bg-black text-black dark:text-white`}>
       <div className="flex-grow flex items-center justify-center">
         <div className="mx-auto max-w-md space-y-6 py-12 w-full px-4">
           <div className="space-y-2 text-center">
@@ -68,6 +70,7 @@ export default function SignIn() {
                 required
                 type="email"
                 onChange={handleChange}
+                className="dark:bg-gray-800 dark:text-white"
               />
             </div>
             <div className="space-y-2">
@@ -77,18 +80,17 @@ export default function SignIn() {
                 required
                 type="password"
                 onChange={handleChange}
+                className="dark:bg-gray-800 dark:text-white"
               />
             </div>
-            <Button className="relative w-full bg-black text-white" type="submit" disabled={loading}>
-  {!loading && <span>Sign In</span>}
-  {loading && (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="spinner" />
-    </div>
-  )}
-</Button>
-
-
+            <Button className="relative w-full bg-black text-white hover:bg-black hover:text-white" type="submit" disabled={loading}>
+              {!loading && <span>Sign In</span>}
+              {loading && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="spinner" />
+                </div>
+              )}
+            </Button>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </form>
           <Button
