@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import DashSidebar from '@/components/component/DashSidebar.jsx';
 import DashProfile from '@/components/component/DashProfile.jsx';
 
 export default function Dashboard() {
@@ -17,14 +16,9 @@ export default function Dashboard() {
   }, [location.search]);
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
-      <DashSidebar tab={tab} />
-      <div className="flex-1">
-        {tab === 'profile' && (
-          <div className="flex justify-center items-center h-full">
-            <DashProfile />
-          </div>
-        )}
+    <div className="flex flex-col min-h-screen dark:bg-black">
+      <div className="flex-1 flex justify-center items-center p-4">
+        {tab === 'profile' && <DashProfile />}
       </div>
     </div>
   );

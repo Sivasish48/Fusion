@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/button';
 
 export default function DashProfile() {
   return (
-    <div className="max-w-4xl mx-auto mt-8 px-4">
-      <Card>
-        <div className="flex items-center justify-center p-6 border-b">
-          <Avatar className="h-24 w-24">
+    <div className="w-full max-w-2xl mx-auto dark:bg-dark dark:text-white">
+      <Card className="dark:bg-dark">
+        <div className="flex items-center justify-center p-6 border-b dark:border-gray-700">
+          <Avatar className="h-24 w-24 dark:bg-gray-800">
             <AvatarFallback>USER</AvatarFallback>
           </Avatar>
         </div>
-        <CardContent className="p-6 space-y-6">
+        <CardContent className="p-6 space-y-6 dark:bg-dark">
           <div className="text-center">
             <div className="text-3xl font-bold">Jared Palmer</div>
             <div className="text-sm text-gray-500">@jaredpalmer</div>
@@ -22,20 +22,22 @@ export default function DashProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="username">Change Username</Label>
-              <Input id="username" defaultValue="Jared Palmer" />
+              <Input id="username" defaultValue="Jared Palmer" className="dark:bg-gray-800 dark:text-white" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Change Email</Label>
-              <Input id="email" type="email" defaultValue="jared@example.com" />
+              <Input id="email" type="email" defaultValue="jared@example.com" className="dark:bg-gray-800 dark:text-white" />
             </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Change Password</Label>
-            <Input id="password" type="password" defaultValue="" />
+            <Input id="password" type="password" defaultValue="" className="dark:bg-gray-800 dark:text-white" />
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end p-6">
-          <Button>Save Changes</Button>
+        <CardFooter className="flex flex-col gap-2 p-6 sm:flex-row sm:justify-end dark:bg-dark">
+          <Button variant="outline" className="dark:border-gray-700 dark:text-white">Save Changes</Button>
+          <Button variant="destructive" className="dark:bg-red-700 dark:text-white">Delete Account</Button>
+          <Button className="dark:bg-gray-800 dark:text-white">Sign Out</Button>
         </CardFooter>
       </Card>
     </div>
