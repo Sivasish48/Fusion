@@ -43,7 +43,7 @@ export default function SignIn() {
       }
 
       if (res.ok) {
-        signInSuccess(data);
+        signInSuccess(data.user);
         navigate("/home");
       }
     } catch (error) {

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import authRouter from "./routes/authRouter.js";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const Port = 4000;
@@ -12,6 +13,7 @@ dotenv.config();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
