@@ -13,6 +13,8 @@ export default function Header() {
   const { currentUser } = useRecoilValue(userState);
   const { theme } = useTheme();
 
+  console.log("Current User in Header:", currentUser);
+
   return (
     <header className="sticky top-0 left-0 right-0 z-50 flex h-20 w-full items-center justify-between px-4 md:px-6 bg-white dark:bg-black">
       {/* Left section with brand logo */}

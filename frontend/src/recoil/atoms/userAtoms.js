@@ -1,3 +1,4 @@
+// recoil/atoms/userAtoms.js
 import { atom } from 'recoil';
 import { localStorageEffect } from '../utils/localStorageEffect.js';
 

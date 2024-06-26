@@ -37,13 +37,16 @@ export default function SignIn() {
       });
 
       const data = await res.json();
+      console.log("API Response:", data);
 
       if (data.success === false) {
         return signInFailure(data.message);
       }
 
       if (res.ok) {
-        signInSuccess(data.user);
+        console.log("User data received:", data);
+        signInSuccess(data);
+        console.log("User signed in:", data);
         navigate("/home");
       }
     } catch (error) {
