@@ -2,16 +2,23 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import {useSetRecoilState} from "recoil";
 import Footer from "@/components/component/footer";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/components/component/theme-provider.jsx"; // Assuming you have a theme provider for dark mode
+import { userState } from "@/recoil/atoms/userAtoms.js";
+//import { useRecoilState } from "recoil";
+
 
 export default function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
+ // const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { theme } = useTheme(); // Get the current theme from your theme provider
+
+  const setUser = useSetRecoilState(userState);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -22,10 +29,10 @@ export default function Signup() {
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("All fields are required");
     }
-    try {
-      setLoading(true);
-      setErrorMessage(null);
-      const res = await fetch("http://localhost:4000/api/auth/signup", {
+   
+      // setLoading(true);
+      // setErrorMessage(null);
+      const response = await fetch("http://localhost:4000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,25 +40,13 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      const data =  response.data
+      localStorage.setItem('token',data.token)
 
-      if (data.success === false) {
-        setLoading(false);
-        return setErrorMessage(data.message);
-      }
-      console.log(data); // Log the response data for debugging
-      setLoading(false);
 
-      if (res.ok) {
-        navigate("/home");
-      }
-    } catch (error) {
-      setErrorMessage(error.message);
-      console.error("Error during signup:", error); // Log errors for debugging
-      setLoading(false);
-    }
-  };
-
+      setUser({userEmail: email, isLoading: false})
+    
+  }
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'dark:bg-black' : 'bg-white'}`}>
       <div className="flex-grow flex items-center justify-center">
@@ -114,7 +109,7 @@ export default function Signup() {
                 />
               )}
             </Button>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {/* {errorMessage && <p className="text-red-500">{errorMessage}</p>} */}
           </form>
           <Button
             className={`w-full ${theme === 'dark' ? 'bg-white text-black hover:bg-black hover:text-white' : 'bg-blue-500 text-white hover:bg-blue-700'}`}

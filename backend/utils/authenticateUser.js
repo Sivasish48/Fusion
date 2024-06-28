@@ -1,20 +1,34 @@
 import jwt from "jsonwebtoken";
-import { errorHandler } from "./error.js";
+
+const JWT_SECRETKEY = "suvam48351455";
 
 export const authenticateUser = (req, res, next) => {
-  const token = req.cookies.access_token;
+  // const token = req.cookies.access_token;
 
-  if (!token) {
-    console.log('No token provided');
-    return next(errorHandler(401, "Unauthorizeddddd"));
-  }
+  const authHeader = req.headers.authorization;
+  if(authHeader){
+    const token = authHeader && authHeader.split(" ")[1];
 
-  jwt.verify(token, process.env.JWT_SECRETKEY, (err, user) => {
-    if (err) {
-      console.log('Token verification failed:', err.message);
-      return next(errorHandler(401, "Unauthorized"));
+    jwt.verify(token, JWT_SECRETKEY),(err,user)=>{
+      if(err){
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      req.user = user;
+      next();
     }
-    req.user = user;
-    next();
-  });
+  }else{
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+ 
+  // if (!token) {
+  //   return res.status(401).json({ message: "Unauthorized" });
+  // }
+
+  // try {
+  //   const decoded = jwt.verify(token, JWT_SECRETKEY);
+  //   req.user = decoded;
+  //   next();
+  // } catch (error) {
+  //   return res.status(401).json({ message: "Unauthorized" });
+  // }
 };

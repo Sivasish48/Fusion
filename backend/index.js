@@ -15,10 +15,11 @@ const corsOptions = {
 };
 
 dotenv.config();
-
-app.use(cors(corsOptions)); // Use CORS middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors(corsOptions)); // Use CORS middleware
+
+
 
 mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -32,16 +33,16 @@ app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 
 // For internal errors
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
+// app.use((err, req, res, next) => {
+//   const statusCode = err.statusCode || 500;
+//   const message = err.message || "Internal Server Error";
 
-  res.status(statusCode).json({
-    success: false,
-    statusCode,
-    message,
-  });
-});
+//   res.status(statusCode).json({
+//     success: false,
+//     statusCode,
+//     message,
+//   });
+// });
 
 app.listen(Port, () => {
   console.log(`App is running on port ${Port}`);

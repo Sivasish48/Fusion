@@ -3,17 +3,27 @@ import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./mode-toggle";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+//import { useRecoilValue,useSetRecoilState } from "recoil";
+
+import { isUserLoading } from "@/recoil/selectors/isUserLoading.js";
+import {useSetRecoilState, useRecoilValue} from "recoil";
 import { userState } from "@/recoil/atoms/userAtoms";
+import { userEmailState } from "@/recoil/selectors/userEmail.js";
 import { ProfileLogo } from "./profile-logo";
 import { useTheme } from "@/components/component/theme-provider.jsx";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { currentUser } = useRecoilValue(userState);
+ // const { currentUser } = useRecoilValue(userState);
+
+ const userLoading = useRecoilValue(isUserLoading);
+ const userEmail = useRecoilValue(userEmailState);
+ const setUser = useSetRecoilState(userState);
+
+
   const { theme } = useTheme();
 
-  console.log("Current User in Header:", currentUser);
+  //console.log("Current User in Header:", currentUser);
 
   return (
     <header className="sticky top-0 left-0 right-0 z-50 flex h-20 w-full items-center justify-between px-4 md:px-6 bg-white dark:bg-black">
@@ -51,7 +61,7 @@ export default function Header() {
       
       {/* Right section with profile and dark mode logos */}
       <div className="flex items-center space-x-4">
-        {currentUser ? (
+        {userEmail ? (
           <div className="flex items-center space-x-4 ml-4">
             <ProfileLogo />
           </div>
