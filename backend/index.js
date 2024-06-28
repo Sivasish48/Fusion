@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import authRouter from "./routes/authRouter.js";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
+//import cookieParser from "cookie-parser";
 
 const app = express();
 const Port = 4000;
@@ -16,7 +16,7 @@ const corsOptions = {
 
 dotenv.config();
 app.use(express.json());
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(cors(corsOptions)); // Use CORS middleware
 
 
