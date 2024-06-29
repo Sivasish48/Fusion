@@ -2,50 +2,42 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import {useSetRecoilState} from "recoil";
+
 import Footer from "@/components/component/footer";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/components/component/theme-provider.jsx"; // Assuming you have a theme provider for dark mode
-import { userState } from "@/recoil/atoms/userAtoms.js";
+import { useClerk } from '@clerk/clerk-react';
 //import { useRecoilState } from "recoil";
 
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({});
+  const { user } = useClerk();
  // const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+ const [username, setUsername] = useState('');
+ const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+ 
   const { theme } = useTheme(); // Get the current theme from your theme provider
 
-  const setUser = useSetRecoilState(userState);
+ 
 
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.username || !formData.email || !formData.password) {
-      return setErrorMessage("All fields are required");
-    }
    
-      // setLoading(true);
-      // setErrorMessage(null);
-      const response = await fetch("http://localhost:4000/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+    try {
+      await user.signUp.create({
+        emailAddress: email,
+        password: password,
       });
-
-      const data =  response.data
-      localStorage.setItem('token',data.token)
-
-
-      setUser({userEmail: email, isLoading: false})
-    
+   
+      navigate('/signin');
+    } catch (error) {
+      setError(error.message);
+    }
   }
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'dark:bg-black' : 'bg-white'}`}>
@@ -65,7 +57,7 @@ export default function Signup() {
                 placeholder="john"
                 required
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => setUsername(e.target.value)}
                 className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
@@ -76,7 +68,7 @@ export default function Signup() {
                 placeholder="john@example.com"
                 required
                 type="email"
-                onChange={handleChange}
+                 onChange={(e) => setEmail(e.target.value)}
                 className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
@@ -86,17 +78,17 @@ export default function Signup() {
                 id="password"
                 required
                 type="password"
-                onChange={handleChange}
+                onChange={(e) => setPassword(e.target.value)}
                 className={`w-full ${theme === 'dark' ? 'dark:bg-gray-800 dark:text-gray-50' : 'bg-white'}`}
               />
             </div>
             <Button
               className={`relative w-full hover:bg-black hover:text-white ${theme === 'dark' ? 'bg-black text-white' : 'bg-blue-500 text-white hover:bg-blue-700'}`}
               type="submit"
-              disabled={loading}
+              disabled={!username || !email || !password}
             >
               <span>Sign Up</span>
-              {loading && (
+              {error && <p className="text-red-500">{error}</p>}
                 <div
                   className="absolute inset-0 flex items-center justify-center rounded-full"
                   style={{
@@ -107,7 +99,7 @@ export default function Signup() {
                     borderTopColor: "currentColor",
                   }}
                 />
-              )}
+              )
             </Button>
             {/* {errorMessage && <p className="text-red-500">{errorMessage}</p>} */}
           </form>

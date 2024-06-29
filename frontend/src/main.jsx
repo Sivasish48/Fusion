@@ -1,15 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import './index.css';
-import { RecoilRoot } from 'recoil';
+
 import { ThemeProvider } from "@/components/component/theme-provider.jsx"
+import { ClerkProvider} from '@clerk/clerk-react';
+
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key")
+}
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-    <RecoilRoot>
+    
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <App />
-    </RecoilRoot>
+    </ClerkProvider>
+   
     </ThemeProvider>
   </React.StrictMode>,
 );
+
+
+
+

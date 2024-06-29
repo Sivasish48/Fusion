@@ -1,29 +1,19 @@
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./mode-toggle";
 import { useNavigate } from "react-router-dom";
-//import { useRecoilValue,useSetRecoilState } from "recoil";
-
-import { isUserLoading } from "@/recoil/selectors/isUserLoading.js";
-import {useSetRecoilState, useRecoilValue} from "recoil";
-import { userState } from "@/recoil/atoms/userAtoms";
-import { userEmailState } from "@/recoil/selectors/userEmail.js";
+import { useUser, useClerk } from "@clerk/clerk-react";
 import { ProfileLogo } from "./profile-logo";
 import { useTheme } from "@/components/component/theme-provider.jsx";
 
 export default function Header() {
   const navigate = useNavigate();
- // const { currentUser } = useRecoilValue(userState);
-
- const userLoading = useRecoilValue(isUserLoading);
- const userEmail = useRecoilValue(userEmailState);
- const setUser = useSetRecoilState(userState);
-
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   const { theme } = useTheme();
-
-  //console.log("Current User in Header:", currentUser);
 
   return (
     <header className="sticky top-0 left-0 right-0 z-50 flex h-20 w-full items-center justify-between px-4 md:px-6 bg-white dark:bg-black">
@@ -61,10 +51,15 @@ export default function Header() {
       
       {/* Right section with profile and dark mode logos */}
       <div className="flex items-center space-x-4">
-        {userEmail ? (
-          <div className="flex items-center space-x-4 ml-4">
-            <ProfileLogo />
-          </div>
+        {user ? (
+          <>
+            <div className="flex items-center space-x-4 ml-4">
+              <ProfileLogo />
+              <button onClick={() => signOut()} className="group inline-flex h-10 items-center justify-center rounded-md bg-white px-5 py-2 text-md font-bold transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none dark:bg-black dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50">
+                Sign Out
+              </button>
+            </div>
+          </>
         ) : (
           <Link
             to="/signup"
