@@ -51,7 +51,7 @@ try {
 };
 
 
-const userSelf = async (req, res, next) => {
+const userSelf = async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -61,6 +61,6 @@ const userSelf = async (req, res, next) => {
     username: user.username,
     id: user._id,
   });
-  next()
+  
 }
 export { test, updateUser,userSelf };

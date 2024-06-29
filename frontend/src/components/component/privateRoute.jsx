@@ -1,16 +1,16 @@
-import React from 'react'
-import { useRecoilValue } from 'recoil'
-//import { userState } from '@/recoil/atoms/userAtoms'
+import React from 'react';
+import { useRecoilValue } from 'recoil';
 import { Outlet, Navigate } from 'react-router-dom';
-import { userEmailState } from "@/recoil/selectors/userEmail.js";
+import { userState } from '@/recoil/atoms/userAtoms';
 
 function PrivateRoute() {
-  
-    const userEmail = useRecoilValue(userEmailState);
-  return (
-    
-     userEmail ? <Outlet /> : <Navigate to='/signin' />
-  )
+  const { currentUser, isLoading } = useRecoilValue(userState);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return currentUser ? <Outlet /> : <Navigate to='/signin' />;
 }
 
-export default PrivateRoute
+export default PrivateRoute;
